@@ -1,11 +1,16 @@
 import gzip
 import json
 import matplotlib.pyplot as plt
+import os
 
 posts = []
 posts_count = 0
 emotions = {}
 sentiments = {}
+
+mainDir =  os.path.join(os.getcwd(), 'Mini_Project_1')
+dataSetPath = os.path.join(mainDir, 'Dataset', 'goemotions.json.gz')
+figuresPath = os.path.join(mainDir, 'Part_1', 'Figures')
 
 with gzip.open('Mini_Project_1\Dataset\goemotions.json.gz', 'rb') as f:
   # "posts" is an array of posts, where each post is an array 
@@ -41,7 +46,7 @@ plt.bar(emotions.keys(), list(pair["occurance"] for pair in emotions.values()))
 plt.title('Occurences of Emotions')
 plt.xlabel('Emotions')
 plt.ylabel('Occurences')
-plt.savefig("Mini_Project_1\Part_1\Figures\Occurences_of_Emotions.pdf")
+plt.savefig(os.path.join(figuresPath, 'Occurences_of_Emotions.pdf'))
 
 # emotions bar graph (frequencies)
 plt.clf()
@@ -51,7 +56,7 @@ plt.bar(emotions.keys(), list(pair["frequency"] for pair in emotions.values()))
 plt.title('Frequencies of Emotions')
 plt.xlabel('Emotions')
 plt.ylabel('Frequency (%)')
-plt.savefig("Mini_Project_1\Part_1\Figures\Frequency_of_Emotions.pdf")
+plt.savefig(os.path.join(figuresPath, 'Frequency_of_Emotions.pdf'))
 
 # sentiments bar graph (occurances)
 plt.clf()
@@ -61,7 +66,7 @@ plt.bar(sentiments.keys(), list(pair["occurance"] for pair in sentiments.values(
 plt.title('Occurences of Sentiments')
 plt.xlabel('Sentiments')
 plt.ylabel('Occurences')
-plt.savefig("Mini_Project_1\Part_1\Figures\Occurences_of_Sentiments.pdf")
+plt.savefig(os.path.join(figuresPath,'Occurences_of_Sentiments.pdf'))
 
 # sentiments bar graph (frequencies)
 plt.clf()
@@ -71,4 +76,4 @@ plt.bar(sentiments.keys(), list(pair["frequency"] for pair in sentiments.values(
 plt.title('Frequencies of Sentiments')
 plt.xlabel('Sentiments')
 plt.ylabel('Frequency (%)')
-plt.savefig("Mini_Project_1\Part_1\Figures\Frequency_of_Sentiments.pdf")
+plt.savefig(os.path.join(figuresPath,'Frequency_of_Sentiments.pdf'))
