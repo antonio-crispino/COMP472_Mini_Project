@@ -7,66 +7,59 @@ from sklearn.model_selection import train_test_split
 
 mainDir =  os.path.join(os.getcwd(), 'Mini_Project_1')
 dataSetPath = os.path.join(mainDir, 'Dataset', 'goemotions.json.gz')
-vocabPath = os.path.join(mainDir, 'Part_2', 'Vocabulary_Size&Frequency.json')
+outputPath = os.path.join(mainDir, 'Part_2', 'Output.txt')
 
 try: 
     with gzip.open(dataSetPath, 'rb') as f:
         posts = json.load(f)
 except:
     print(f"Error reading dataset {dataSetPath}")
-      
-# 2.1
-def Part_2_1(vocabPath, posts):
-    '''
-        Function writes total vocabulary size and their frequency (entire dataset)
-        format: size of vocabulary: size
-                'word': frequency
 
-        :vocabPath: Path of output file
+content = [post[0] for post in posts]
+vectorizer = CountVectorizer()
+cv = vectorizer.fit_transform(content).toarray()
+emotion = [post[1] for post in posts]
+sentiment = [post[2] for post in posts]
+
+# 2.1
+def Part_2_1(outputPath):
+    '''
+        Function writes total vocabulary size to output file
+
+        :outputPath: Path of output file
         :posts: json load of post documents dataset
         :return: size of the vocabulary
     '''
     try: 
-        with open(vocabPath, 'a+') as vocab:
+        with open(outputPath, 'a+') as f:
             # Only content of each post is considered, exclding emotion/sentiment
-            vocabData = [post[0] for post in posts]
-            vectorizer = CountVectorizer()
-            cvFit = vectorizer.fit_transform(vocabData)
             word_list = vectorizer.get_feature_names_out()
-            count_list = cvFit.toarray().sum(axis =0)
-
-            jsonVocab = json.dumps(dict(zip(word_list,count_list.tolist())), indent =4)
             vocabSize = len(word_list)
-            vocab.write(f"SIZE OF VOCABULARY ==> {vocabSize}\n\n")
-            vocab.write(jsonVocab)        
+            f.write(f"SIZE OF VOCABULARY : {vocabSize}\n\n ==============================\n")      
     except: 
-        print(f"Error writing to Vocabulary files")
+        print(f"Error writing to output file")
     return vocabSize
 
 # 2.2
-def Part_2_2(posts):
+def Part_2_2():
     '''
         Function splits dataset for train and test (80% - 20%)
-
         :posts: json load of post document dataset
-        :return: x_train, x_test, y_train, y_test
+        :return: X_train, X_test, y_train, y_test
 
     '''
-    content = [post[0] for post in posts]
-    emotion = [post[1] for post in posts]
-    sentiment = [post[2] for post in posts]
-    # x: independent variable CONTENT
+    # X: independent variable CONTENT vector (features = 30449)
     # y: dependent variable EMOTION, SENTIMENT
-    x = content
+
+    X = cv
     y = np.array(list(zip(emotion, sentiment)))
-
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
-
-    return x_train, x_test, y_train, y_test
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=2)
+    return X_train, X_test, y_train, y_test
 
 
-#Part_2_1(vocabPath, posts)
-#Part_2_2(posts)
+Part_2_1(outputPath)
+X_train, X_test, y_train, y_test = Part_2_2()
+
 
     
 
