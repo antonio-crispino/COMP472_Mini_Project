@@ -1,3 +1,108 @@
 SIZE OF VOCABULARY : 30449
 
- ==============================
+================ BASE-MLP ===================
+Emotion Score: 0.42358281922942614
+Classfication Report: 
+                precision    recall  f1-score   support
+
+    admiration       0.47      0.52      0.49      2141
+     amusement       0.51      0.57      0.54      1178
+         anger       0.35      0.15      0.21      1060
+     annoyance       0.21      0.02      0.03      1584
+      approval       0.52      0.03      0.06      2240
+        caring       0.29      0.02      0.03       721
+     confusion       0.49      0.03      0.05       999
+     curiosity       0.39      0.09      0.15      1188
+        desire       0.39      0.06      0.10       389
+disappointment       0.33      0.00      0.00       965
+   disapproval       0.23      0.03      0.06      1558
+       disgust       0.52      0.03      0.05       582
+ embarrassment       0.00      0.00      0.00       316
+    excitement       0.60      0.02      0.04       586
+          fear       0.00      0.00      0.00       348
+     gratitude       0.80      0.75      0.77      1360
+         grief       0.00      0.00      0.00        78
+           joy       0.41      0.17      0.24       897
+          love       0.58      0.61      0.60      1014
+   nervousness       0.00      0.00      0.00       156
+       neutral       0.39      0.90      0.55     11161
+      optimism       0.50      0.25      0.33       894
+         pride       0.00      0.00      0.00       128
+   realization       0.00      0.00      0.00       964
+        relief       0.00      0.00      0.00       162
+       remorse       0.50      0.23      0.32       303
+       sadness       0.35      0.17      0.23       727
+      surprise       0.43      0.08      0.13       665
+
+      accuracy                           0.42     34364
+     macro avg       0.33      0.17      0.18     34364
+  weighted avg       0.40      0.42      0.32     34364
+
+
+Sentiment Score: 0.5619543708532185
+Classification Report 
+              precision    recall  f1-score   support
+
+   ambiguous       0.48      0.18      0.26      3816
+    negative       0.57      0.48      0.52      7677
+     neutral       0.48      0.65      0.55     11161
+    positive       0.69      0.66      0.67     11710
+
+    accuracy                           0.56     34364
+   macro avg       0.55      0.49      0.50     34364
+weighted avg       0.57      0.56      0.55     34364
+
+
+================ TOP-MNB ===================
+Best Emotion Score: 0.3832717235506721, Best Emotion Estimator: MultinomialNB(alpha=0.5)
+Classfication Report: 
+                precision    recall  f1-score   support
+
+    admiration       0.46      0.52      0.49      2141
+     amusement       0.49      0.43      0.46      1178
+         anger       0.35      0.20      0.25      1060
+     annoyance       0.17      0.10      0.13      1584
+      approval       0.23      0.13      0.16      2240
+        caring       0.22      0.13      0.16       721
+     confusion       0.31      0.14      0.19       999
+     curiosity       0.36      0.19      0.25      1188
+        desire       0.36      0.12      0.18       389
+disappointment       0.26      0.09      0.13       965
+   disapproval       0.24      0.14      0.18      1558
+       disgust       0.35      0.12      0.18       582
+ embarrassment       0.43      0.05      0.09       316
+    excitement       0.22      0.07      0.11       586
+          fear       0.37      0.12      0.18       348
+     gratitude       0.68      0.73      0.70      1360
+         grief       0.00      0.00      0.00        78
+           joy       0.37      0.20      0.26       897
+          love       0.57      0.48      0.52      1014
+   nervousness       0.11      0.01      0.01       156
+       neutral       0.40      0.73      0.52     11161
+      optimism       0.38      0.23      0.29       894
+         pride       0.11      0.01      0.01       128
+   realization       0.18      0.07      0.10       964
+        relief       0.25      0.01      0.01       162
+       remorse       0.37      0.11      0.17       303
+       sadness       0.32      0.17      0.22       727
+      surprise       0.32      0.16      0.21       665
+
+      accuracy                           0.39     34364
+     macro avg       0.32      0.19      0.22     34364
+  weighted avg       0.36      0.39      0.35     34364
+
+
+Best Sentiment Score: 0.5395908242774352, Best Sentiment Estimator: MultinomialNB(alpha=1)
+Classification Report 
+              precision    recall  f1-score   support
+
+   ambiguous       0.42      0.23      0.30      3816
+    negative       0.53      0.52      0.52      7677
+     neutral       0.49      0.50      0.49     11161
+    positive       0.61      0.70      0.65     11710
+
+    accuracy                           0.54     34364
+   macro avg       0.51      0.49      0.49     34364
+weighted avg       0.53      0.54      0.53     34364
+
+
