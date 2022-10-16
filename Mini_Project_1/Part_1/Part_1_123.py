@@ -8,11 +8,11 @@ posts_count = 0
 emotions = {}
 sentiments = {}
 
-mainDir =  os.path.join(os.getcwd(), 'Mini_Project_1')
-dataSetPath = os.path.join(mainDir, 'Dataset', 'goemotions.json.gz')
-figuresPath = os.path.join(mainDir, 'Part_1', 'Figures')
+main_directory =  os.path.join(os.getcwd(), 'Mini_Project_1')
+dataset_path = os.path.join(main_directory, 'Dataset', 'goemotions.json.gz')
+figures_path = os.path.join(main_directory, 'Part_1', 'Figures')
 
-with gzip.open('Mini_Project_1\Dataset\goemotions.json.gz', 'rb') as f:
+with gzip.open(dataset_path, 'rb') as f:
   # "posts" is an array of posts, where each post is an array 
   # that contains a post's text, its emotion, and its sentiment.
   posts = json.load(f)
@@ -46,7 +46,8 @@ plt.bar(emotions.keys(), list(pair["occurance"] for pair in emotions.values()))
 plt.title('Occurences of Emotions')
 plt.xlabel('Emotions')
 plt.ylabel('Occurences')
-plt.savefig(os.path.join(figuresPath, 'Occurences_of_Emotions.pdf'))
+plt.savefig(os.path.join(figures_path, 'Occurences_of_Emotions.pdf'))
+print("Created: Occurences_of_Emotions.pdf")
 
 # emotions bar graph (frequencies)
 plt.clf()
@@ -56,7 +57,8 @@ plt.bar(emotions.keys(), list(pair["frequency"] for pair in emotions.values()))
 plt.title('Frequencies of Emotions')
 plt.xlabel('Emotions')
 plt.ylabel('Frequency (%)')
-plt.savefig(os.path.join(figuresPath, 'Frequency_of_Emotions.pdf'))
+plt.savefig(os.path.join(figures_path, 'Frequency_of_Emotions.pdf'))
+print("Created: Frequency_of_Emotions.pdf")
 
 # sentiments bar graph (occurances)
 plt.clf()
@@ -66,7 +68,8 @@ plt.bar(sentiments.keys(), list(pair["occurance"] for pair in sentiments.values(
 plt.title('Occurences of Sentiments')
 plt.xlabel('Sentiments')
 plt.ylabel('Occurences')
-plt.savefig(os.path.join(figuresPath,'Occurences_of_Sentiments.pdf'))
+plt.savefig(os.path.join(figures_path,'Occurences_of_Sentiments.pdf'))
+print("Created: Occurences_of_Sentiments.pdf")
 
 # sentiments bar graph (frequencies)
 plt.clf()
@@ -76,4 +79,5 @@ plt.bar(sentiments.keys(), list(pair["frequency"] for pair in sentiments.values(
 plt.title('Frequencies of Sentiments')
 plt.xlabel('Sentiments')
 plt.ylabel('Frequency (%)')
-plt.savefig(os.path.join(figuresPath,'Frequency_of_Sentiments.pdf'))
+plt.savefig(os.path.join(figures_path,'Frequency_of_Sentiments.pdf'))
+print("Created: Frequency_of_Sentiments.pdf")

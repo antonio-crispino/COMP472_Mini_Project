@@ -1,117 +1,138 @@
 import gzip
 import json
 import os
-from matplotlib import pyplot as plt
 import numpy as np
+from matplotlib import pyplot as plt
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.metrics import ConfusionMatrixDisplay, accuracy_score, classification_report, confusion_matrix
-from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.neural_network import MLPClassifier
+from sklearn.model_selection import GridSearchCV, train_test_split
+from sklearn.metrics import ConfusionMatrixDisplay, accuracy_score, classification_report, confusion_matrix
 
-mainDir =  os.path.join(os.getcwd(), 'Mini_Project_1')
-dataSetPath = os.path.join(mainDir, 'Dataset', 'goemotions.json.gz')
-outputPath = os.path.join(mainDir, 'Part_2', 'Output.txt')
+main_directory =  os.path.join(os.getcwd(), 'Mini_Project_1')
+dataset_path = os.path.join(main_directory, 'Dataset', 'goemotions.json.gz')
+output_path = os.path.join(main_directory, 'Part_2', 'Output.txt')
 
-try: 
-    with gzip.open(dataSetPath, 'rb') as f:
-        posts = json.load(f)
-except:
-    print(f"Error reading dataset {dataSetPath}")
+posts = []
+with gzip.open(dataset_path, 'rb') as f:
+  posts = json.load(f)
 
-content = [post[0] for post in posts]
+content = np.array([post[0] for post in posts])
+emotion = np.array([post[1] for post in posts])
+sentiment = np.array([post[2] for post in posts])
+
 vectorizer = CountVectorizer()
-cv = vectorizer.fit_transform(content)
-emotion = [post[1] for post in posts]
-sentiment = [post[2] for post in posts]
+content_vector = vectorizer.fit_transform(content)
 
-# 2.1
-def Part_2_1(f):
-    '''
-        Function writes total vocabulary size to output file
-        :return: size of the vocabulary
-    '''
-  
-    word_list = vectorizer.get_feature_names_out()
-    vocabSize = len(word_list)
-    f.write(f"SIZE OF VOCABULARY : {vocabSize}\n\n")      
+# Part 2.1
+def part_2_1(f):
+  '''
+    Function writes total vocabulary size to output file
+    :return: size of the vocabulary
+  '''
+  vocabulary_list = vectorizer.get_feature_names_out()
+  vocabulary_size = len(vocabulary_list)
+  f.write(f"SIZE OF VOCABULARY : {vocabulary_size}\n\n")    
+  return vocabulary_size
 
-    return vocabSize
+# Part 2.2
+def part_2_2():
+  '''
+    Function splits dataset for train and test (80% - 20%)
+    :return: x_train, x_test, ye_train, ye_test, ys_train, ys_test
+  '''
+  X = content_vector # independent variable CONTENT vector
+  ye = emotion # dependent variable EMOTION
+  ys = sentiment # dependent variable SENTIMENT
+  x_train, x_test, ye_train, ye_test, ys_train, ys_test = train_test_split(X, ye, ys, test_size=0.2, random_state=2)
+  return x_train, x_test, ye_train, ye_test, ys_train, ys_test
 
-# 2.2
-def Part_2_2():
-    '''
-        Function splits dataset for train and test (80% - 20%)
-        :return: X_train, X_test, y_train, y_test
-    '''
-    # X: independent variable CONTENT vector (features = 30449)
-    # y: dependent variable EMOTION, SENTIMENT
+# Part 2.3.1
+def part_2_3_1(f):
+  '''
+    A Multinomial Naive Bayes Classifier (Base-MNB)
+  '''
+  x_train, x_test, ye_train, ye_test, ys_train, ys_test = part_2_2()
 
-    X = cv
-    yEmo = emotion
-    ySen = sentiment
+  # Max iteration chosen to be small to reduce runtime
+  classifier_of_emotions_train = MultinomialNB() # Create Multinomial Naive Bayes classifier, and let it compute the prior probabilities of each class
+  model_of_emotions_train = classifier_of_emotions_train.fit(x_train, ye_train) # Train the model from the classifier
+  predictions_of_emotions_test = model_of_emotions_train.predict(x_test) # Perform classification on the array of test vectors
+  accuracy_score_of_predictions_of_emotions_test = accuracy_score(ye_test, predictions_of_emotions_test)
 
-    X_train, X_test, yEmo_train, yEmo_test, ySen_train, ySen_test = train_test_split(X, yEmo, ySen, test_size=0.2, random_state=2)
+  # Max iteration chosen to be small to reduce runtime
+  classifier_of_sentiments_train = MultinomialNB()
+  model_of_sentiments_train = classifier_of_sentiments_train.fit(x_train, ys_train)
+  predictions_of_sentiments_test = model_of_sentiments_train.predict(x_test)
+  accuracy_score_of_predictions_of_sentiments_test = accuracy_score(ys_test, predictions_of_sentiments_test)
 
-    return X_train, X_test, yEmo_train, yEmo_test, ySen_train, ySen_test
+  f.write(f"====================================== BASE-MNB ======================================\n\n")
+  f.write(f"Emotion Score: {accuracy_score_of_predictions_of_emotions_test}\n\n")
+  f.write(f"Emotion Classfication Report: \n{classification_report(ye_test, predictions_of_emotions_test, zero_division=1)}\n")
+  f.write(f"Sentiment Score: {accuracy_score_of_predictions_of_sentiments_test}\n\n")
+  f.write(f"Sentiment Classification Report \n{classification_report(ys_test, predictions_of_sentiments_test)}\n")
 
+# Part 2.3.3
+def part_2_3_3(f):
+  '''
+    Function to for MLP classification
+    outputs BASE-MLP data: EmotionScore, SentimentScore, Classification Report
+  '''
+  x_train, x_test, ye_train, ye_test, ys_train, ys_test = part_2_2()
 
+  # Max iteration chosen to be small to reduce runtime
+  classifier_of_emotions_train = MLPClassifier(activation='logistic', max_iter=2)
+  model_of_emotions_train = classifier_of_emotions_train.fit(x_train, ye_train)
+  predictions_of_emotions_test = model_of_emotions_train.predict(x_test)
+  accuracy_score_of_predictions_of_emotions_test = accuracy_score(ye_test, predictions_of_emotions_test)
 
-def Part_2_3_3(f):
-    '''
-        Function to for MLP classification
-        outputs BASE-MLP data: EmotionScore, SentimentScore, Classification Report
-    '''
+  classifier_of_sentiments_train = MLPClassifier(activation='logistic', max_iter=2)
+  model_of_sentiments_train = classifier_of_sentiments_train.fit(x_train, ys_train)
+  predictions_of_sentiments_test = model_of_sentiments_train.predict(x_test)
+  accuracy_score_of_predictions_of_sentiments_test = accuracy_score(ys_test, predictions_of_sentiments_test)
 
-    # Max iteration chosen to be small to reduce runtime
-    model = MLPClassifier(activation='logistic', max_iter=2)
+  f.write(f"====================================== BASE-MLP ======================================\n\n")
+  f.write(f"Emotion Score: {accuracy_score_of_predictions_of_emotions_test}\n\n")
+  f.write(f"Emotion Classfication Report: \n{classification_report(ye_test, predictions_of_emotions_test)}\n")
+  f.write(f"Sentiment Score: {accuracy_score_of_predictions_of_sentiments_test}\n\n")
+  f.write(f"Sentiment Classification Report \n{classification_report(ys_test, predictions_of_sentiments_test)}\n")
 
-    model.fit(X_train, yEmo_train)
-    emoPredictions = model.predict(X_test)
-    emoScore = accuracy_score(yEmo_test, emoPredictions)
-
-    model.fit(X_train, ySen_train)
-    senPredictions = model.predict(X_test)
-    senScore = accuracy_score(ySen_test, senPredictions)
-
-    f.write(f"================ BASE-MLP ===================\nEmotion Score: {emoScore}\n")
-    f.write(f"Classfication Report: \n{classification_report(yEmo_test, emoPredictions)}\n\n")
-    f.write(f"Sentiment Score: {senScore}\n")
-    f.write(f"Classification Report \n{classification_report(ySen_test, senPredictions)}\n\n")
-    
-    # 2.4.2
-    # cm = confusion_matrix(yEmo_test, emoPredictions)
-    # ConfusionMatrixDisplay(cm).plot()
-    # plt.show()
+  # 2.4.2
+  # cm = confusion_matrix(yEmo_test, emoPredictions)
+  # ConfusionMatrixDisplay(cm).plot()
+  # plt.show()
    
-def Part_2_3_4(f):
-    '''
-        Function for MNB with GridSearchCV
-        ouputs TOP-MNB data: Best EmotionScore + Estimator, Best SentimentScore + Estimator, CLassification Report
-    '''
-    param = {"alpha": [0.5, 0, 1, 0.2]}
-    model = GridSearchCV(estimator=MultinomialNB(), param_grid=param)
-    model.fit(X_train, yEmo_train)
-    emoPredictions = model.best_estimator_.predict(X_test)
-    emoEst = model.best_estimator_
-    emoScore = model.best_score_
+# Part 2.3.4
+def part_2_3_4(f):
+  '''
+    Function for MNB with GridSearchCV
+    ouputs TOP-MNB data: Best EmotionScore + Estimator, Best SentimentScore + Estimator, CLassification Report
+  '''
+  x_train, x_test, ye_train, ye_test, ys_train, ys_test = part_2_2()
 
-    model.fit(X_train, ySen_train)
-    senPredictions = model.best_estimator_.predict(X_test)
-    senEst = model.best_estimator_
-    senScore = model.best_score_
+  param = {"alpha": [0.5, 0, 1, 0.2]}
+  model = GridSearchCV(estimator=MultinomialNB(), param_grid=param)
+  model.fit(x_train, ye_train)
+  emo_predictions = model.best_estimator_.predict(x_test)
+  emo_est = model.best_estimator_
+  emo_score = model.best_score_
 
-    f.write(f"================ TOP-MNB ===================\nBest Emotion Score: {emoScore}, Best Emotion Estimator: {emoEst}\n")
-    f.write(f"Classfication Report: \n{classification_report(yEmo_test, emoPredictions)}\n\n")
-    f.write(f"Best Sentiment Score: {senScore}, Best Sentiment Estimator: {senEst}\n")
-    f.write(f"Classification Report \n{classification_report(ySen_test, senPredictions)}\n\n")
+  model.fit(x_train, ys_train)
+  sen_predictions = model.best_estimator_.predict(x_test)
+  sen_est = model.best_estimator_
+  sen_score = model.best_score_
 
-with open(outputPath, 'a+') as f:
-    Part_2_1(f)
-    X_train, X_test, yEmo_train, yEmo_test, ySen_train, ySen_test = Part_2_2()
-    Part_2_3_3(f)
-    Part_2_3_4(f)
-    
+  f.write(f"====================================== TOP-MNB ======================================\n\n")
+  f.write(f"Best Emotion Score: {emo_score}\n\n")
+  f.write(f"Best Emotion Estimator: {emo_est}\n\n")
+  f.write(f"Emotion Classfication Report: \n{classification_report(ye_test, emo_predictions)}\n")
+  f.write(f"Best Sentiment Score: {sen_score}\n\n")
+  f.write(f"Best Sentiment Estimator: {sen_est}\n\n")
+  f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sen_predictions)}\n")
 
-    
-
+# Write to output file
+with open(output_path, 'w') as f:
+  part_2_1(f)
+  part_2_3_1(f)
+  part_2_3_3(f)
+  part_2_3_4(f)
