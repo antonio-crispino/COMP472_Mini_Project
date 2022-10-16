@@ -47,6 +47,31 @@ def part_2_2():
   x_train, x_test, ye_train, ye_test, ys_train, ys_test = train_test_split(X, ye, ys, test_size=0.2, random_state=2)
   return x_train, x_test, ye_train, ye_test, ys_train, ys_test
 
+# Part 2.3.1
+def part_2_3_1(f):
+  '''
+    A Multinomial Naive Bayes Classifier (Base-MNB)
+  '''
+  x_train, x_test, ye_train, ye_test, ys_train, ys_test = part_2_2()
+
+  # Max iteration chosen to be small to reduce runtime
+  classifier_of_emotions_train = MultinomialNB() # Create Multinomial Naive Bayes classifier, and let it compute the prior probabilities of each class
+  model_of_emotions_train = classifier_of_emotions_train.fit(x_train, ye_train) # Train the model from the classifier
+  predictions_of_emotions_test = model_of_emotions_train.predict(x_test) # Perform classification on the array of test vectors
+  accuracy_score_of_predictions_of_emotions_test = accuracy_score(ye_test, predictions_of_emotions_test)
+
+  # Max iteration chosen to be small to reduce runtime
+  classifier_of_sentiments_train = MultinomialNB()
+  model_of_sentiments_train = classifier_of_sentiments_train.fit(x_train, ys_train)
+  predictions_of_sentiments_test = model_of_sentiments_train.predict(x_test)
+  accuracy_score_of_predictions_of_sentiments_test = accuracy_score(ys_test, predictions_of_sentiments_test)
+
+  f.write(f"====================================== BASE-MNB ======================================\n\n")
+  f.write(f"Emotion Score: {accuracy_score_of_predictions_of_emotions_test}\n\n")
+  f.write(f"Emotion Classfication Report: \n{classification_report(ye_test, predictions_of_emotions_test, zero_division=1)}\n")
+  f.write(f"Sentiment Score: {accuracy_score_of_predictions_of_sentiments_test}\n\n")
+  f.write(f"Sentiment Classification Report \n{classification_report(ys_test, predictions_of_sentiments_test)}\n")
+
 # Part 2.3.3
 def part_2_3_3(f):
   '''
@@ -105,7 +130,9 @@ def part_2_3_4(f):
   f.write(f"Best Sentiment Estimator: {sen_est}\n\n")
   f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sen_predictions)}\n")
 
+# Write to output file
 with open(output_path, 'w') as f:
   part_2_1(f)
+  part_2_3_1(f)
   part_2_3_3(f)
   part_2_3_4(f)
