@@ -5,11 +5,10 @@ import numpy as np
 from matplotlib import pyplot as plt
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import GridSearchCV, train_test_split
-from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import ConfusionMatrixDisplay, accuracy_score, classification_report, confusion_matrix
-import pandas as pd
 
 # declare os paths
 main_directory =  os.path.join(os.getcwd(), 'Mini_Project_1')
@@ -70,10 +69,33 @@ def part_2_3_1(f):
   sentiment_classifier = MultinomialNB()
   sentiment_model = sentiment_classifier.fit(x_train, ys_train)
   sentiment_prediction = sentiment_model.predict(x_test)
-  sentiment_accuracy = accuracy_score(ys_test,sentiment_prediction)
+  sentiment_accuracy = accuracy_score(ys_test, sentiment_prediction)
 
   # For part 2.4
   f.write(f"====================================== BASE-MNB ======================================\n\n")
+  f.write(f"Emotion Score: {emotion_accuracy}\n\n")
+  f.write(f"Emotion Classfication Report: \n{classification_report(ye_test, emotion_prediction, zero_division=1)}\n")
+  f.write(f"Sentiment Score: {sentiment_accuracy}\n\n")
+  f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sentiment_prediction)}\n")
+
+# Part 2.3.2
+def part_2_3_2(f):
+  '''
+    A Decision Tree Classifier (Base-DT)
+  '''
+
+  emotion_classifier = DecisionTreeClassifier()
+  emotion_model = emotion_classifier.fit(x_train, ye_train)
+  emotion_prediction = emotion_model.predict(x_test)
+  emotion_accuracy = accuracy_score(ye_test, emotion_prediction)
+
+  sentiment_classifier = DecisionTreeClassifier()
+  sentiment_model = sentiment_classifier.fit(x_train, ys_train)
+  sentiment_prediction = sentiment_model.predict(x_test)
+  sentiment_accuracy = accuracy_score(ys_test, sentiment_prediction)
+
+  # For part 2.4
+  f.write(f"====================================== BASE-DT ======================================\n\n")
   f.write(f"Emotion Score: {emotion_accuracy}\n\n")
   f.write(f"Emotion Classfication Report: \n{classification_report(ye_test, emotion_prediction, zero_division=1)}\n")
   f.write(f"Sentiment Score: {sentiment_accuracy}\n\n")
@@ -200,7 +222,7 @@ def part_2_5(f):
 
   f.write(f"\n\n---------------------------STOP WORDS REMOVED-----------------------------------\n\n")
   part_2_3_1(f)
-  # part_2_3_2(f)
+  part_2_3_2(f)
   part_2_3_3(f)
   part_2_3_4(f)
   part_2_3_5(f)
@@ -210,7 +232,7 @@ def part_2_5(f):
 with open(output_path, 'a+') as f:
   part_2_1(f)
   part_2_3_1(f)
-  # part_2_3_2(f)
+  part_2_3_2(f)
   part_2_3_3(f)
   part_2_3_4(f)
   part_2_3_5(f)
