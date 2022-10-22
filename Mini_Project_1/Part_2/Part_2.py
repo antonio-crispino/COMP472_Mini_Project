@@ -77,6 +77,26 @@ def part_2_3_1(f):
     f.write(f"Sentiment Score: {sentiment_accuracy}\n\n")
     f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sentiment_prediction)}\n")
 
+    # 2.4.2
+    plt.clf()
+    cme = confusion_matrix(ye_test, emotion_prediction)
+    cmp = ConfusionMatrixDisplay(cme)
+    fig, ax = plt.subplots(figsize=(15, 15))
+    plt.title('Confusion Matrix of Emotions 2.3.1 BASE MNB')
+    plt.xlabel('Predict Emotions')
+    plt.ylabel('True Emotions')
+    cmp.plot(ax=ax, cmap='viridis')
+    plt.show()
+
+    # 2.4.2
+    plt.clf()
+    cms = confusion_matrix(ys_test, sentiment_prediction)
+    ConfusionMatrixDisplay(cms).plot()
+    plt.title('Confusion Matrix of Sentiments 2.3.1 BASE MNB')
+    plt.xlabel('Predict Sentiments')
+    plt.ylabel('True Sentiments')
+    plt.show()
+
 
 # Part 2.3.3
 def part_2_3_3(f):
@@ -103,10 +123,24 @@ def part_2_3_3(f):
     f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sentiment_prediction)}\n")
 
     # 2.4.2
-    # cm = confusion_matrix(yEmo_test, emoPredictions)
-    # ConfusionMatrixDisplay(cm).plot()
-    # plt.show()
+    plt.clf()
+    cme = confusion_matrix(ye_test, emotion_prediction)
+    cmp = ConfusionMatrixDisplay(cme)
+    fig, ax = plt.subplots(figsize=(15, 15))
+    plt.title('Confusion Matrix of Emotions 2.3.3 BASE MLP')
+    plt.xlabel('Predict Emotions')
+    plt.ylabel('True Emotions')
+    cmp.plot(ax=ax, cmap='viridis')
+    plt.show()
 
+    # 2.4.2
+    plt.clf()
+    cms = confusion_matrix(ys_test, sentiment_prediction)
+    ConfusionMatrixDisplay(cms).plot()
+    plt.title('Confusion Matrix of Sentiments 2.3.3 BASE MLP')
+    plt.xlabel('Predict Sentiments')
+    plt.ylabel('True Sentiments')
+    plt.show()
 
 # Part 2.3.4
 def part_2_3_4(f):
@@ -134,6 +168,26 @@ def part_2_3_4(f):
     f.write(f"Best Sentiment Score: {sentiment_score}\n\n")
     f.write(f"Best Sentiment Estimator: {sentiment_best_estimator}\n\n")
     f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sentiment_prediction)}\n")
+
+    # 2.4.2
+    plt.clf()
+    cme = confusion_matrix(ye_test, emotion_prediction)
+    cmp = ConfusionMatrixDisplay(cme)
+    fig, ax = plt.subplots(figsize=(15, 15))
+    plt.title('Confusion Matrix of Emotions 2.3.4 TOP MNB')
+    plt.xlabel('Predict Emotions')
+    plt.ylabel('True Emotions')
+    cmp.plot(ax=ax, cmap='viridis')
+    plt.show()
+
+    # 2.4.2
+    plt.clf()
+    cms = confusion_matrix(ys_test, sentiment_prediction)
+    ConfusionMatrixDisplay(cms).plot()
+    plt.title('Confusion Matrix of Sentiments 2.3.4 TOP MNB')
+    plt.xlabel('Predict Sentiments')
+    plt.ylabel('True Sentiments')
+    plt.show()
 
 
 # Part 2.3.5
@@ -163,6 +217,25 @@ def part_2_3_5(f):
     f.write(f"Best Sentiment Estimator: {sen_est}\n\n")
     f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sen_predictions)}\n")
 
+    # 2.4.2
+    plt.clf()
+    cme = confusion_matrix(ye_test, emotion_prediction)
+    cmp = ConfusionMatrixDisplay(cme)
+    fig, ax = plt.subplots(figsize=(15, 15))
+    plt.title('Confusion Matrix of Emotions 2.3.5 TOP DT')
+    plt.xlabel('Predict Emotions')
+    plt.ylabel('True Emotions')
+    cmp.plot(ax=ax, cmap='viridis')
+    plt.show()
+
+    # 2.4.2
+    plt.clf()
+    cms = confusion_matrix(ys_test, sentiment_prediction)
+    ConfusionMatrixDisplay(cms).plot()
+    plt.title('Confusion Matrix of Sentiments 2.3.5 TOP DT')
+    plt.xlabel('Predict Sentiments')
+    plt.ylabel('True Sentiments')
+    plt.show()
 
 # Part 2.3.6
 def part_2_3_6(f):
@@ -192,6 +265,26 @@ def part_2_3_6(f):
     f.write(f"Best Sentiment Estimator: {sen_est}\n\n")
     f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sen_predictions)}\n")
 
+    # 2.4.2
+    plt.clf()
+    cme = confusion_matrix(ye_test, emotion_prediction)
+    cmp = ConfusionMatrixDisplay(cme)
+    fig, ax = plt.subplots(figsize=(15, 15))
+    plt.title('Confusion Matrix of Emotions 2.3.6 BASE MLP')
+    plt.xlabel('Predict Emotions')
+    plt.ylabel('True Emotions')
+    cmp.plot(ax=ax, cmap='viridis')
+    plt.show()
+
+    # 2.4.2
+    plt.clf()
+    cms = confusion_matrix(ys_test, sentiment_prediction)
+    ConfusionMatrixDisplay(cms).plot()
+    plt.title('Confusion Matrix of Sentiments 2.3.6 BASE MLP')
+    plt.xlabel('Predict Sentiments')
+    plt.ylabel('True Sentiments')
+    plt.show()
+
 
 def part_2_5(f):
     global x_train, x_test, ye_train, ye_test, ys_train, ys_test
@@ -199,6 +292,9 @@ def part_2_5(f):
     content_vector_sw_removed = vectorizer_sw_removed.fit_transform(content)
     x_train, x_test, ye_train, ye_test, ys_train, ys_test = part_2_2(content_vector_sw_removed)
     f.write(f"\n\n---------------------------STOP WORDS REMOVED-----------------------------------\n\n")
+    part_2_3_1(f)
+    part_2_3_3(f)
+    part_2_3_4(f)
     part_2_3_5(f)
     part_2_3_6(f)
 
