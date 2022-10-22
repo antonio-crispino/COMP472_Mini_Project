@@ -137,7 +137,6 @@ def part_2_3_5(f):
     Function for Top DT with GridSearchCV
     ouputs TOP-DT data: Best EmotionScore , Best SentimentScore , Classification Report
   '''
-    x_train, x_test, ye_train, ye_test, ys_train, ys_test = part_2_2()
 
     param = {"criterion": ("gini", "entropy"), "max_depth": (100, 3), "min_samples_split": (12, 5, 30)}
     model = GridSearchCV(estimator=DecisionTreeClassifier(), param_grid=param)
@@ -165,7 +164,6 @@ def part_2_3_6(f):
     Function for Top Multi-Layered Perceptron with GridSearchCV
     ouputs TOP-MLP data: Best EmotionScore , Best SentimentScore , Classification Report
   '''
-    x_train, x_test, ye_train, ye_test, ys_train, ys_test = part_2_2()
 
     param = {"activation": ("identity", "logistic", "tanh", "relu"), "hidden_layer_sizes": ((5, 5), (5, 10)),
              "solver": ("adam", "sgd")}
@@ -195,9 +193,8 @@ def part_2_5(f):
   content_vector_sw_removed = vectorizer_sw_removed.fit_transform(content)
   x_train, x_test, ye_train, ye_test, ys_train, ys_test = part_2_2(content_vector_sw_removed)
   f.write(f"\n\n---------------------------STOP WORDS REMOVED-----------------------------------\n\n")
-  part_2_3_1(f)
-  part_2_3_3(f)
-  part_2_3_4(f)
+  part_2_3_5(f)
+  part_2_3_6(f)
   
 
 x_train, x_test, ye_train, ye_test, ys_train, ys_test = part_2_2(content_vector)
