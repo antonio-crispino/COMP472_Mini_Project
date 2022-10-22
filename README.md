@@ -19,6 +19,8 @@ https://github.com/antonio-crispino/COMP472_Mini_Project
       
     (For Part 2)  -> COMP 472/Mini Project/Untitled/Mini_Project_1/Part_2 
     
+    (For Part 3)  -> COMP 472/Mini Project/Untitled/Mini_Project_1/Part_2 
+    
 3. Install the following packages:
 
   - matplotlib
@@ -30,3 +32,5 @@ https://github.com/antonio-crispino/COMP472_Mini_Project
  - os
  - numpy 
  - pyplot
+
+4. Run the .py files.
