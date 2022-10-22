@@ -224,3 +224,61 @@ Sentiment Classification Report
    macro avg       0.52      0.47      0.47     34364
 weighted avg       0.55      0.52      0.52     34364
 
+====================================== TOP-MLP ======================================
+
+Best Emotion Score: 0.39962609113987346
+
+Best Emotion Estimator: MLPClassifier(activation='identity', hidden_layer_sizes=(5, 10), max_iter=2)
+
+Emotion Classification Report: 
+                precision    recall  f1-score   support
+
+    admiration       0.41      0.48      0.44      2141
+     amusement       0.50      0.53      0.52      1178
+         anger       0.35      0.04      0.07      1060
+     annoyance       0.11      0.00      0.01      1584
+      approval       0.00      0.00      0.00      2240
+        caring       0.00      0.00      0.00       721
+     confusion       0.38      0.06      0.10       999
+     curiosity       0.44      0.09      0.14      1188
+        desire       0.00      0.00      0.00       389
+disappointment       0.11      0.00      0.00       965
+   disapproval       0.11      0.00      0.00      1558
+       disgust       0.00      0.00      0.00       582
+ embarrassment       0.00      0.00      0.00       316
+    excitement       0.00      0.00      0.00       586
+          fear       0.00      0.00      0.00       348
+     gratitude       0.70      0.77      0.73      1360
+         grief       0.00      0.00      0.00        78
+           joy       0.22      0.11      0.14       897
+          love       0.56      0.59      0.58      1014
+   nervousness       0.00      0.00      0.00       156
+       neutral       0.38      0.92      0.54     11161
+      optimism       0.00      0.00      0.00       894
+         pride       0.00      0.00      0.00       128
+   realization       0.00      0.00      0.00       964
+        relief       0.00      0.00      0.00       162
+       remorse       0.71      0.02      0.03       303
+       sadness       0.34      0.13      0.19       727
+      surprise       0.36      0.01      0.01       665
+
+      accuracy                           0.41     34364
+     macro avg       0.20      0.13      0.13     34364
+  weighted avg       0.29      0.41      0.29     34364
+
+Best Sentiment Score: 0.5625072439484619
+
+Best Sentiment Estimator: MLPClassifier(activation='tanh', hidden_layer_sizes=(5, 10), max_iter=2)
+
+Sentiment Classification Report 
+              precision    recall  f1-score   support
+
+   ambiguous       0.45      0.23      0.31      3816
+    negative       0.55      0.54      0.54      7677
+     neutral       0.50      0.56      0.53     11161
+    positive       0.66      0.69      0.68     11710
+
+    accuracy                           0.56     34364
+   macro avg       0.54      0.51      0.51     34364
+weighted avg       0.56      0.56      0.56     34364
+
