@@ -13,7 +13,7 @@ https://github.com/antonio-crispino/COMP472_Mini_Project
 ## Instructions on how to run your program 
 
 1. Download a ZIP of our project
-2. Go Into the Following Paths and open both .py files in your editor of choice
+2. Go Into the Following Paths and open the .py files in your editor of choice
 
     (For Part 1)  -> COMP 472/Mini Project/Untitled/Mini_Project_1/Part_1 
       
