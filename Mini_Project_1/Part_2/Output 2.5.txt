@@ -55,6 +55,60 @@ Sentiment Classification Report
    macro avg       0.51      0.48      0.48     34364
 weighted avg       0.53      0.54      0.52     34364
 
+====================================== BASE-DT ======================================
+
+Emotion Score: 0.3611046443952974
+
+Emotion Classfication Report: 
+                precision    recall  f1-score   support
+
+    admiration       0.41      0.56      0.47      2141
+     amusement       0.39      0.55      0.46      1178
+         anger       0.25      0.37      0.30      1060
+     annoyance       0.14      0.22      0.18      1584
+      approval       0.19      0.25      0.22      2240
+        caring       0.22      0.27      0.24       721
+     confusion       0.23      0.28      0.25       999
+     curiosity       0.33      0.33      0.33      1188
+        desire       0.23      0.32      0.27       389
+disappointment       0.17      0.18      0.17       965
+   disapproval       0.26      0.24      0.25      1558
+       disgust       0.24      0.17      0.20       582
+ embarrassment       0.24      0.18      0.21       316
+    excitement       0.17      0.15      0.16       586
+          fear       0.38      0.37      0.38       348
+     gratitude       0.73      0.72      0.73      1360
+         grief       0.10      0.09      0.09        78
+           joy       0.28      0.24      0.26       897
+          love       0.55      0.52      0.54      1014
+   nervousness       0.18      0.13      0.15       156
+       neutral       0.50      0.44      0.47     11161
+      optimism       0.36      0.20      0.26       894
+         pride       0.17      0.09      0.12       128
+   realization       0.19      0.08      0.11       964
+        relief       0.24      0.07      0.11       162
+       remorse       0.40      0.29      0.34       303
+       sadness       0.34      0.20      0.25       727
+      surprise       0.37      0.20      0.26       665
+
+      accuracy                           0.36     34364
+     macro avg       0.30      0.28      0.28     34364
+  weighted avg       0.37      0.36      0.36     34364
+
+Sentiment Score: 0.5390815970201374
+
+Sentiment Classification Report 
+              precision    recall  f1-score   support
+
+   ambiguous       0.35      0.46      0.40      3816
+    negative       0.51      0.59      0.54      7677
+     neutral       0.51      0.48      0.49     11161
+    positive       0.70      0.59      0.64     11710
+
+    accuracy                           0.54     34364
+   macro avg       0.52      0.53      0.52     34364
+weighted avg       0.55      0.54      0.54     34364
+
 ====================================== BASE-MLP ======================================
 
 Emotion Score: 0.42084739844022817
