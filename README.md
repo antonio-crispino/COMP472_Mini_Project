@@ -21,12 +21,12 @@ https://github.com/antonio-crispino/COMP472_Mini_Project
     
 3. Install the following packages:
 
-  matplotlib
-  sklearn
+  - matplotlib
+  - sklearn
   
   Makes ure you have the following preinstalled / configrued in your python interpreter 
-  gzip
-  json
-  os
-  numpy 
-  pyplot
+ - gzip
+ - json
+ - os
+ - numpy 
+ - pyplot
