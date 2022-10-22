@@ -222,7 +222,7 @@ def part_2_5(f):
 
   f.write(f"\n\n---------------------------STOP WORDS REMOVED-----------------------------------\n\n")
   part_2_3_1(f)
-  part_2_3_2(f)
+  # part_2_3_2(f)
   part_2_3_3(f)
   part_2_3_4(f)
   part_2_3_5(f)
@@ -232,7 +232,7 @@ def part_2_5(f):
 with open(output_path, 'a+') as f:
   part_2_1(f)
   part_2_3_1(f)
-  part_2_3_2(f)
+  # part_2_3_2(f)
   part_2_3_3(f)
   part_2_3_4(f)
   part_2_3_5(f)
