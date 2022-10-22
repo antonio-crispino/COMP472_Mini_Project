@@ -12,8 +12,8 @@ from sklearn.metrics import ConfusionMatrixDisplay, accuracy_score, classificati
 
 # declare os paths
 main_directory = os.path.join(os.getcwd(), 'Mini_Project_1')
-dataset_path = '/Users/mairamalhi/JupyterNotebook/COMP472_Mini_Project/Mini_Project_1/Dataset/goemotions.json.gz'
-output_path = '/Users/mairamalhi/JupyterNotebook/COMP472_Mini_Project/Mini_Project_1/Part_2/Output.txt'
+dataset_path = os.path.join(main_directory, 'Dataset', 'goemotions.json.gz')
+output_path = os.path.join(main_directory, 'Part_2', 'Output.txt')
 
 # load posts into an array
 posts_array = np.array([])
