@@ -8,6 +8,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.metrics import ConfusionMatrixDisplay, accuracy_score, classification_report, confusion_matrix
+import pandas as pd
 
 main_directory =  os.path.join(os.getcwd(), 'Mini_Project_1')
 dataset_path = os.path.join(main_directory, 'Dataset', 'goemotions.json.gz')
@@ -36,12 +37,13 @@ def part_2_1(f):
   return vocabulary_size
 
 # Part 2.2
-def part_2_2():
+def part_2_2(X):
   '''
     Function splits dataset for train and test (80% - 20%)
+    :param: Independant variable
     :return: x_train, x_test, ye_train, ye_test, ys_train, ys_test
   '''
-  X = content_vector # independent variable CONTENT vector
+
   ye = emotion # dependent variable EMOTION
   ys = sentiment # dependent variable SENTIMENT
   x_train, x_test, ye_train, ye_test, ys_train, ys_test = train_test_split(X, ye, ys, test_size=0.2, random_state=2)
@@ -52,25 +54,24 @@ def part_2_3_1(f):
   '''
     A Multinomial Naive Bayes Classifier (Base-MNB)
   '''
-  x_train, x_test, ye_train, ye_test, ys_train, ys_test = part_2_2()
 
   # Max iteration chosen to be small to reduce runtime
-  classifier_of_emotions_train = MultinomialNB() # Create Multinomial Naive Bayes classifier, and let it compute the prior probabilities of each class
-  model_of_emotions_train = classifier_of_emotions_train.fit(x_train, ye_train) # Train the model from the classifier
-  predictions_of_emotions_test = model_of_emotions_train.predict(x_test) # Perform classification on the array of test vectors
-  accuracy_score_of_predictions_of_emotions_test = accuracy_score(ye_test, predictions_of_emotions_test)
+  emotion_classifier = MultinomialNB() # Create Multinomial Naive Bayes classifier, and let it compute the prior probabilities of each class
+  emotion_model = emotion_classifier.fit(x_train, ye_train) # Train the model from the classifier
+  emotion_prediction = emotion_model.predict(x_test) # Perform classification on the array of test vectors
+  emotion_accuracy = accuracy_score(ye_test, emotion_prediction)
 
   # Max iteration chosen to be small to reduce runtime
-  classifier_of_sentiments_train = MultinomialNB()
-  model_of_sentiments_train = classifier_of_sentiments_train.fit(x_train, ys_train)
-  predictions_of_sentiments_test = model_of_sentiments_train.predict(x_test)
-  accuracy_score_of_predictions_of_sentiments_test = accuracy_score(ys_test, predictions_of_sentiments_test)
+  sentiment_classifier = MultinomialNB()
+  sentiment_model = sentiment_classifier.fit(x_train, ys_train)
+  sentiment_prediction = sentiment_model.predict(x_test)
+  sentiment_accuracy = accuracy_score(ys_test,sentiment_prediction)
 
   f.write(f"====================================== BASE-MNB ======================================\n\n")
-  f.write(f"Emotion Score: {accuracy_score_of_predictions_of_emotions_test}\n\n")
-  f.write(f"Emotion Classfication Report: \n{classification_report(ye_test, predictions_of_emotions_test, zero_division=1)}\n")
-  f.write(f"Sentiment Score: {accuracy_score_of_predictions_of_sentiments_test}\n\n")
-  f.write(f"Sentiment Classification Report \n{classification_report(ys_test, predictions_of_sentiments_test)}\n")
+  f.write(f"Emotion Score: {emotion_accuracy}\n\n")
+  f.write(f"Emotion Classfication Report: \n{classification_report(ye_test, emotion_prediction, zero_division=1)}\n")
+  f.write(f"Sentiment Score: {sentiment_accuracy}\n\n")
+  f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sentiment_prediction)}\n")
 
 # Part 2.3.3
 def part_2_3_3(f):
@@ -78,24 +79,23 @@ def part_2_3_3(f):
     Function to for MLP classification
     outputs BASE-MLP data: EmotionScore, SentimentScore, Classification Report
   '''
-  x_train, x_test, ye_train, ye_test, ys_train, ys_test = part_2_2()
 
   # Max iteration chosen to be small to reduce runtime
-  classifier_of_emotions_train = MLPClassifier(activation='logistic', max_iter=2)
-  model_of_emotions_train = classifier_of_emotions_train.fit(x_train, ye_train)
-  predictions_of_emotions_test = model_of_emotions_train.predict(x_test)
-  accuracy_score_of_predictions_of_emotions_test = accuracy_score(ye_test, predictions_of_emotions_test)
+  emotion_classifier = MLPClassifier(activation='logistic', max_iter=2)
+  emotion_model = emotion_classifier.fit(x_train, ye_train)
+  emotion_prediction = emotion_model.predict(x_test)
+  emotion_accuracy = accuracy_score(ye_test, emotion_prediction)
 
-  classifier_of_sentiments_train = MLPClassifier(activation='logistic', max_iter=2)
-  model_of_sentiments_train = classifier_of_sentiments_train.fit(x_train, ys_train)
-  predictions_of_sentiments_test = model_of_sentiments_train.predict(x_test)
-  accuracy_score_of_predictions_of_sentiments_test = accuracy_score(ys_test, predictions_of_sentiments_test)
+  sentiment_classifier = MLPClassifier(activation='logistic', max_iter=2)
+  sentiment_model = sentiment_classifier.fit(x_train, ys_train)
+  sentiment_prediction = sentiment_model.predict(x_test)
+  sentiment_accuracy = accuracy_score(ys_test, sentiment_prediction)
 
   f.write(f"====================================== BASE-MLP ======================================\n\n")
-  f.write(f"Emotion Score: {accuracy_score_of_predictions_of_emotions_test}\n\n")
-  f.write(f"Emotion Classfication Report: \n{classification_report(ye_test, predictions_of_emotions_test)}\n")
-  f.write(f"Sentiment Score: {accuracy_score_of_predictions_of_sentiments_test}\n\n")
-  f.write(f"Sentiment Classification Report \n{classification_report(ys_test, predictions_of_sentiments_test)}\n")
+  f.write(f"Emotion Score: {emotion_accuracy}\n\n")
+  f.write(f"Emotion Classfication Report: \n{classification_report(ye_test, emotion_prediction, zero_division=1)}\n")
+  f.write(f"Sentiment Score: {sentiment_accuracy}\n\n")
+  f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sentiment_prediction)}\n")
 
   # 2.4.2
   # cm = confusion_matrix(yEmo_test, emoPredictions)
@@ -108,31 +108,46 @@ def part_2_3_4(f):
     Function for MNB with GridSearchCV
     ouputs TOP-MNB data: Best EmotionScore + Estimator, Best SentimentScore + Estimator, CLassification Report
   '''
-  x_train, x_test, ye_train, ye_test, ys_train, ys_test = part_2_2()
 
-  param = {"alpha": [0.5, 0, 1, 0.2]}
+  param = {'alpha': [0.5, 0, 1, 0.2]}
   model = GridSearchCV(estimator=MultinomialNB(), param_grid=param)
   model.fit(x_train, ye_train)
-  emo_predictions = model.best_estimator_.predict(x_test)
-  emo_est = model.best_estimator_
-  emo_score = model.best_score_
+  emotion_prediction = model.best_estimator_.predict(x_test)
+  emotion_best_estimator = model.best_estimator_
+  emotion_score = model.best_score_
 
   model.fit(x_train, ys_train)
-  sen_predictions = model.best_estimator_.predict(x_test)
-  sen_est = model.best_estimator_
-  sen_score = model.best_score_
+  sentiment_prediction = model.best_estimator_.predict(x_test)
+  sentiment_best_estimator = model.best_estimator_
+  sentiment_score = model.best_score_
 
   f.write(f"====================================== TOP-MNB ======================================\n\n")
-  f.write(f"Best Emotion Score: {emo_score}\n\n")
-  f.write(f"Best Emotion Estimator: {emo_est}\n\n")
-  f.write(f"Emotion Classfication Report: \n{classification_report(ye_test, emo_predictions)}\n")
-  f.write(f"Best Sentiment Score: {sen_score}\n\n")
-  f.write(f"Best Sentiment Estimator: {sen_est}\n\n")
-  f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sen_predictions)}\n")
+  f.write(f"Best Emotion Score: {emotion_score}\n\n")
+  f.write(f"Best Emotion Estimator: {emotion_best_estimator}\n\n")
+  f.write(f"Emotion Classfication Report: \n{classification_report(ye_test, emotion_prediction)}\n")
+  f.write(f"Best Sentiment Score: {sentiment_score}\n\n")
+  f.write(f"Best Sentiment Estimator: {sentiment_best_estimator}\n\n")
+  f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sentiment_prediction)}\n")
 
+def part_2_5(f):
+  global x_train, x_test, ye_train, ye_test, ys_train, ys_test
+  vectorizer_sw_removed = CountVectorizer(stop_words='english') 
+  content_vector_sw_removed = vectorizer_sw_removed.fit_transform(content)
+  x_train, x_test, ye_train, ye_test, ys_train, ys_test = part_2_2(content_vector_sw_removed)
+  f.write(f"\n\n---------------------------STOP WORDS REMOVED-----------------------------------\n\n")
+  part_2_3_1(f)
+  part_2_3_3(f)
+  part_2_3_4(f)
+  
+
+x_train, x_test, ye_train, ye_test, ys_train, ys_test = part_2_2(content_vector)
 # Write to output file
-with open(output_path, 'w') as f:
+with open(output_path, 'a+') as f:
   part_2_1(f)
   part_2_3_1(f)
   part_2_3_3(f)
   part_2_3_4(f)
+  part_2_5(f)
+
+
+
