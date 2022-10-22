@@ -193,6 +193,10 @@ def part_2_5(f):
   content_vector_sw_removed = vectorizer_sw_removed.fit_transform(content)
   x_train, x_test, ye_train, ye_test, ys_train, ys_test = part_2_2(content_vector_sw_removed)
   f.write(f"\n\n---------------------------STOP WORDS REMOVED-----------------------------------\n\n")
+  part_2_3_1(f)
+  #   part_2_3_2(f)
+  part_2_3_3(f)
+  part_2_3_4(f)
   part_2_3_5(f)
   part_2_3_6(f)
   
@@ -202,6 +206,7 @@ x_train, x_test, ye_train, ye_test, ys_train, ys_test = part_2_2(content_vector)
 with open(output_path, 'a+') as f:
   part_2_1(f)
   part_2_3_1(f)
+  #   part_2_3_2(f)
   part_2_3_3(f)
   part_2_3_4(f)
   part_2_3_5(f)
