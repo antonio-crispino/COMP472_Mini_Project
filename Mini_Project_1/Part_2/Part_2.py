@@ -246,13 +246,13 @@ def part_2_3_5(f):
   param = {"criterion": ("gini", "entropy"), "max_depth": (100, 3), "min_samples_split": (12, 5, 30)}
   emotion_classifier = GridSearchCV(estimator=DecisionTreeClassifier(), param_grid=param)
   emotion_model = emotion_classifier.fit(x_train, ye_train)
-  emo_predictions = emotion_model.best_estimator_.predict(x_test)
+  emotion_prediction = emotion_model.best_estimator_.predict(x_test)
   emo_est = emotion_model.best_estimator_
   emo_score = emotion_model.best_score_
 
   sentiment_classifier = GridSearchCV(estimator=DecisionTreeClassifier(), param_grid=param)
   sentiment_model = sentiment_classifier.fit(x_train, ys_train)
-  sen_predictions = sentiment_model.best_estimator_.predict(x_test)
+  sentiment_prediction = sentiment_model.best_estimator_.predict(x_test)
   sen_est = sentiment_model.best_estimator_
   sen_score = sentiment_model.best_score_
 
@@ -260,10 +260,10 @@ def part_2_3_5(f):
   f.write(f"====================================== TOP-DT ======================================\n\n")
   f.write(f"Best Emotion Score: {emo_score}\n\n")
   f.write(f"Best Emotion Estimator: {emo_est}\n\n")
-  f.write(f"Emotion Classification Report: \n{classification_report(ye_test, emo_predictions)}\n")
+  f.write(f"Emotion Classification Report: \n{classification_report(ye_test, emotion_prediction)}\n")
   f.write(f"Best Sentiment Score: {sen_score}\n\n")
   f.write(f"Best Sentiment Estimator: {sen_est}\n\n")
-  f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sen_predictions)}\n")
+  f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sentiment_prediction)}\n")
 
   # Confusion Matrix - Emotions
   plt.clf()
@@ -295,12 +295,12 @@ def part_2_3_6(f):
   param = {"activation": ("identity", "logistic", "tanh", "relu"), "hidden_layer_sizes": ((5, 5), (5, 10)), "solver": ("adam", "sgd")}
   model = GridSearchCV(estimator=MLPClassifier(activation='logistic', max_iter=2), param_grid=param)
   model.fit(x_train, ye_train)
-  emo_predictions = model.best_estimator_.predict(x_test)
+  emotion_prediction = model.best_estimator_.predict(x_test)
   emo_est = model.best_estimator_
   emo_score = model.best_score_
 
   model.fit(x_train, ys_train)
-  sen_predictions = model.best_estimator_.predict(x_test)
+  sentiment_prediction = model.best_estimator_.predict(x_test)
   sen_est = model.best_estimator_
   sen_score = model.best_score_
 
@@ -308,10 +308,10 @@ def part_2_3_6(f):
   f.write(f"====================================== TOP-MLP ======================================\n\n")
   f.write(f"Best Emotion Score: {emo_score}\n\n")
   f.write(f"Best Emotion Estimator: {emo_est}\n\n")
-  f.write(f"Emotion Classification Report: \n{classification_report(ye_test, emo_predictions)}\n")
+  f.write(f"Emotion Classification Report: \n{classification_report(ye_test, emotion_prediction)}\n")
   f.write(f"Best Sentiment Score: {sen_score}\n\n")
   f.write(f"Best Sentiment Estimator: {sen_est}\n\n")
-  f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sen_predictions)}\n")
+  f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sentiment_prediction)}\n")
 
   # Confusion Matrix - Emotions
   plt.clf()
