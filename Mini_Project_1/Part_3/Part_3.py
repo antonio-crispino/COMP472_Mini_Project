@@ -91,10 +91,10 @@ json_embedded_posts.head(3)
 
 # Compute the embeddings as an average
 average_embeddings = []
-for x in range(0, pretrained_embedding_model.vector_size - 1):
+for i in range(0, pretrained_embedding_model.vector_size - 1):
     k = 0
     for j in range(0, len(embedded_posts_tokens[0]) - 1):
-        k += json_embedded_posts[x][j]
+        k += json_embedded_posts[i][j]
     average_embeddings.append(k / len(embedded_posts_tokens[0]))
 
 # Create a data frame (puts data in clean table) using pandas
