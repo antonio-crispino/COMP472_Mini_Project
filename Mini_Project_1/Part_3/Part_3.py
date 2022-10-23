@@ -58,6 +58,8 @@ print("Number of tokens in training set: ", len(all_word_tokens))
 # Take sampel reddit post from the data set
 redditpostsample = ['That', 'looks', 'amazing']
 
+# Compute the embeddings individually per word
+
 # Two arrays, one for vectorized
 vecter_list=[] # will return embeddings for each word as an array one after the other
 word_filtered_list=[] # check if words exist in other posts (otherwise skip), if so, returns same value as redditpostsample
@@ -79,3 +81,17 @@ json_embedded_posts.head(3)
 
 # Display the data in console
 # display(data_frame) #TESTING
+
+# Compute the embeddings as an average
+average_embeddings = []
+for x in range(0, pretrained_embedding_model.vector_size - 1):
+    k = 0
+    for j in range(0, len(dict_tokens[0]) - 1):
+        k += json_embedded_posts[x][j]
+    average_embeddings.append(k/len(dict_tokens[0]))
+
+# Create a data frame (puts data in clean table) using pandas
+data_frame = pd.DataFrame(average_embeddings, columns=['average'])
+data_frame.T.head()
+
+display(data_frame) #TESTING
