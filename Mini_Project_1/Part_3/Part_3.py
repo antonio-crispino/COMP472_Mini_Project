@@ -81,7 +81,9 @@ data_frame = pd.DataFrame.from_dict(dict(zip(word_filtered_list, vecter_list)), 
 # Write the new dataframe file to a .json
 json.dump(data_frame.to_dict(), open("embeddings_of_post.json", 'w'))
 json_embedded_posts = pd.read_json("embeddings_of_post.json")
-dict_tokens = json_embedded_posts.to_dict()
+
+# Turn tokens using JSON dictionary format
+embedded_posts_tokens = json_embedded_posts.to_dict()
 json_embedded_posts.head(3)
 
 # Display the data in console
@@ -91,9 +93,9 @@ json_embedded_posts.head(3)
 average_embeddings = []
 for x in range(0, pretrained_embedding_model.vector_size - 1):
     k = 0
-    for j in range(0, len(dict_tokens[0]) - 1):
+    for j in range(0, len(embedded_posts_tokens[0]) - 1):
         k += json_embedded_posts[x][j]
-    average_embeddings.append(k / len(dict_tokens[0]))
+    average_embeddings.append(k / len(embedded_posts_tokens[0]))
 
 # Create a data frame (puts data in clean table) using pandas
 data_frame = pd.DataFrame(average_embeddings, columns=['average'])
@@ -160,7 +162,7 @@ print("Test Set Hit Rate: {0:.2f}%".format(hit_rate(pretrained_embedding_model, 
 # ----------
 # Part 3.5
 # ----------
-part_2_3_3(f)
+# part_2_3_3(f)
 
 
 # Train MLP Base
