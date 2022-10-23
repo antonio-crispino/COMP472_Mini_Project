@@ -117,25 +117,26 @@ def part_2_2(x):
 # the train and test sets of the
 x_train, x_test, ye_train, ye_test, ys_train, ys_test = part_2_2(content_array)
 
-def hit_rate(model, data_set):
+def hit_rate(emb_model, content):
     '''
       Function that calculates the hit rate for the split dataset for train and test (80% - 20%)
-      :param: Independant variable (content)
+      :param: emb_model (Word2vec model), content (data_set as 2D array of phrases format),
       :return: x_train, x_test, ye_train, ye_test, ys_train, ys_test
     '''
+    
     # create two sets that will collect the words sorted
     vocabulary_found = set()
     other_vocabulary = set()
 
     # Loop through each phrase
-    for phrase in data_set:
+    for phrase in content:
         # Split phrase arrays and loop
         for word in phrase.split():
             word = word.lower()
             vocabulary_found.add(word)
             # check if the word emmbedding is found or not
             try:
-                temp = model[word]
+                temp = emb_model[word]
             # If not found, add to other array
             except:
                 if(word not in other_vocabulary):
@@ -146,3 +147,7 @@ def hit_rate(model, data_set):
 # Print the Hit Rates
 print("Training Set Hit Rate: {0:.2f}%".format(hit_rate(pretrained_embedding_model, x_train)))
 print("Test Set Hit Rate: {0:.2f}%".format(hit_rate(pretrained_embedding_model, x_test)))
+
+# ----------
+# Part 3.5
+# ----------
