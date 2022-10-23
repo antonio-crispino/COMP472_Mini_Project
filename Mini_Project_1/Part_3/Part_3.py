@@ -15,7 +15,8 @@ from sklearn.metrics import ConfusionMatrixDisplay, accuracy_score, classificati
 
 # declare os paths
 main_directory = os.path.join(os.getcwd(), 'Mini_Project_1')
-dataset_path = os.path.join(main_directory, 'Dataset', 'goemotions.json.gz')
+dataset_path = '/Users/mairamalhi/JupyterNotebook/COMP472_Mini_Project/Mini_Project_1/Dataset/goemotions.json.gz'
+output_path = '/Users/mairamalhi/Downloads/COMP 472/Mini Project/Untitled/Mini_Project_1/Part_2/Output_3.5.txt'
 
 # load posts into an array
 posts_array = np.array([])
@@ -49,6 +50,7 @@ tokenized_content_array = [word_tokenize(content) for content in content_array]
 # flatten 2d-array to create an array of every token from every sub-array
 all_word_tokens = np.array([token for tokenized_content in tokenized_content_array for token in tokenized_content])
 # Number of tokens in training set
+print(tokenized_content_array)
 print("Number of tokens in training set: ", len(all_word_tokens))
 
 # print(tokenized_content_array) #TESTING
@@ -60,7 +62,7 @@ print("Number of tokens in training set: ", len(all_word_tokens))
 # ----------
 
 # Take sampel reddit post from the data set
-redditpostsample = ['That', 'looks', 'amazing']
+redditpostsample = ['that', 'looks', 'amazing']
 
 # Compute the embeddings individually per word
 
@@ -125,7 +127,6 @@ def part_2_2(x):
 # the train and test sets of the
 x_train, x_test, ye_train, ye_test, ys_train, ys_test = part_2_2(content_array)
 
-
 def hit_rate(emb_model, content):
     '''
       Function that calculates the hit rate for the split dataset for train and test (80% - 20%)
@@ -162,13 +163,14 @@ print("Test Set Hit Rate: {0:.2f}%".format(hit_rate(pretrained_embedding_model, 
 # ----------
 # Part 3.5
 # ----------
-# part_2_3_3(f)
-
 
 # Train MLP Base
+x_train_emb, x_test_emb, ye_train_emb, ye_test_emb, ys_train_emb, ys_train_emb = train_test_split(
+    embedded_posts_tokens, emotion_array, sentiment_array, train_size=0.8, test_size=0.2
+    )
 
-# Using Part 2.3.3
-def part_2_3_3(f):
+# Using Part 3.5
+def part_3_5(f):
     '''
     Function to for MLP classification
     outputs BASE-MLP data: EmotionScore, SentimentScore, Classification Report
@@ -176,15 +178,15 @@ def part_2_3_3(f):
 
     # Max iteration chosen to be small to reduce runtime
     emotion_classifier = MLPClassifier(activation='logistic', max_iter=2)
-    emotion_model = emotion_classifier.fit(x_train, ye_train)
-    emotion_prediction = emotion_model.predict(x_test)
-    emotion_accuracy = accuracy_score(ye_test, emotion_prediction)
+    emotion_model = emotion_classifier.fit(x_train_emb, ye_train_emb)
+    emotion_prediction = emotion_model.predict(x_test_emb)
+    emotion_accuracy = accuracy_score(ye_test_emb, emotion_prediction)
 
     # Max iteration chosen to be small to reduce runtime
     sentiment_classifier = MLPClassifier(activation='logistic', max_iter=2)
-    sentiment_model = sentiment_classifier.fit(x_train, ys_train)
-    sentiment_prediction = sentiment_model.predict(x_test)
-    sentiment_accuracy = accuracy_score(ys_test, sentiment_prediction)
+    sentiment_model = sentiment_classifier.fit(x_train_emb, ys_train_emb)
+    sentiment_prediction = sentiment_model.predict(x_test_emb)
+    sentiment_accuracy = accuracy_score(ys_test_emb, sentiment_prediction)
 
     # For part 2.4
     f.write(f"====================================== BASE-MLP ======================================\n\n")
@@ -192,3 +194,9 @@ def part_2_3_3(f):
     f.write(f"Emotion Classfication Report: \n{classification_report(ye_test, emotion_prediction, zero_division=1)}\n")
     f.write(f"Sentiment Score: {sentiment_accuracy}\n\n")
     f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sentiment_prediction)}\n")
+
+
+
+with open(output_path, 'a+') as f:
+    part_3_5(f)
+
