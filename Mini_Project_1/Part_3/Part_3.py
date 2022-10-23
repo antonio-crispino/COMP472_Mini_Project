@@ -8,6 +8,7 @@ import nltk
 from nltk.tokenize import word_tokenize
 import pandas as pd
 from IPython.display import display
+from sklearn.model_selection import train_test_split
 
 # declare os paths
 main_directory = os.path.join(os.getcwd(), 'Mini_Project_1')
@@ -95,3 +96,53 @@ data_frame = pd.DataFrame(average_embeddings, columns=['average'])
 data_frame.T.head()
 
 display(data_frame) #TESTING
+
+# ----------
+# Part 3.4
+# ----------
+
+# Retrain model
+# Taken from Part 2.2
+def part_2_2(x):
+  '''
+    Function splits dataset for train and test (80% - 20%)
+    :param: Independant variable (content)
+    :return: x_train, x_test, ye_train, ye_test, ys_train, ys_test
+  '''
+  ye = emotion_array # dependent variable EMOTION
+  ys = sentiment_array # dependent variable SENTIMENT
+  x_train, x_test, ye_train, ye_test, ys_train, ys_test = train_test_split(x, ye, ys, test_size=0.2, random_state=2)
+  return x_train, x_test, ye_train, ye_test, ys_train, ys_test
+
+# the train and test sets of the
+x_train, x_test, ye_train, ye_test, ys_train, ys_test = part_2_2(content_array)
+
+def hit_rate(model, data_set):
+    '''
+      Function that calculates the hit rate for the split dataset for train and test (80% - 20%)
+      :param: Independant variable (content)
+      :return: x_train, x_test, ye_train, ye_test, ys_train, ys_test
+    '''
+    # create two sets that will collect the words sorted
+    vocabulary_found = set()
+    other_vocabulary = set()
+
+    # Loop through each phrase
+    for phrase in data_set:
+        # Split phrase arrays and loop
+        for word in phrase.split():
+            word = word.lower()
+            vocabulary_found.add(word)
+            # check if the word emmbedding is found or not
+            try:
+                temp = model[word]
+            # If not found, add to other array
+            except:
+                if(word not in other_vocabulary):
+                    other_vocabulary.add(word)
+    # compute hit rate as a percentage
+    return (float(len(vocabulary_found) - len(other_vocabulary))) * 100.0 / float(len(vocabulary_found))
+
+# Print the Hit Rates
+print("Training Set Hit Rate: {0:.2f}%".format(hit_rate(pretrained_embedding_model, x_train)))
+print("Test Set Hit Rate: {0:.2f}%".format(hit_rate(pretrained_embedding_model, x_test)))
