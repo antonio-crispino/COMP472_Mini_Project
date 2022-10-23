@@ -7,10 +7,18 @@ from gensim.downloader import load
 from gensim.models import Word2Vec
 import nltk
 from nltk.tokenize import word_tokenize
+from matplotlib import pyplot as plt
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neural_network import MLPClassifier
+from sklearn.model_selection import GridSearchCV, train_test_split
+from sklearn.metrics import ConfusionMatrixDisplay, accuracy_score, classification_report, confusion_matrix
 
 # declare os paths
-main_directory = os.path.join(os.getcwd(), 'Mini_Project_1')
+main_directory =  os.path.join(os.getcwd(), 'Mini_Project_1')
 dataset_path = os.path.join(main_directory, 'Dataset', 'goemotions.json.gz')
+output_path = os.path.join(main_directory, 'Part_2', 'Output.txt')
 
 # load posts into an array
 posts_array = np.array([])
@@ -102,8 +110,88 @@ x_test_embeddings_obj = part_3_3_and_3_4(x_test)
 
 print(content_embeddings_obj["overall_hit_rate"])
 print(json.dumps(content_embeddings_obj[0], indent=2)) #example
+print("The training set hit value: ")
 print(x_train_embeddings_obj["overall_hit_rate"])
 print(json.dumps(x_train_embeddings_obj[0], indent=2)) #example
+print("The test set hit value: ")
 print(x_test_embeddings_obj["overall_hit_rate"])
 print(json.dumps(x_test_embeddings_obj[0], indent=2)) #example
 # json.dump(content_embeddings_obj, open(os.path.join(main_directory, 'Part_3/embeddings', 'content_embeddings_obj.json'), 'w'), indent=2) #example
+
+
+# Part 3.5 and 3.6
+def part_3_5(f):
+    '''
+    Function to for MLP classification
+    outputs BASE-MLP data: EmotionScore, SentimentScore, Classification Report
+  '''
+
+    # Max iteration chosen to be small to reduce runtime
+    classifier_of_emotions_train = MLPClassifier(activation='logistic', max_iter=2)
+    model_of_emotions_train = classifier_of_emotions_train.fit(x_train, ye_train)
+    predictions_of_emotions_test = model_of_emotions_train.predict(x_test)
+    accuracy_score_of_predictions_of_emotions_test = accuracy_score(ye_test, predictions_of_emotions_test)
+
+    classifier_of_sentiments_train = MLPClassifier(activation='logistic', max_iter=2)
+    model_of_sentiments_train = classifier_of_sentiments_train.fit(x_train, ys_train)
+    predictions_of_sentiments_test = model_of_sentiments_train.predict(x_test)
+    accuracy_score_of_predictions_of_sentiments_test = accuracy_score(ys_test, predictions_of_sentiments_test)
+
+    f.write(f"====================================== BASE-MLP ======================================\n\n")
+    f.write(f"Emotion Score: {accuracy_score_of_predictions_of_emotions_test}\n\n")
+    f.write(f"Emotion Classfication Report: \n{classification_report(ye_test, predictions_of_emotions_test)}\n")
+    f.write(f"Sentiment Score: {accuracy_score_of_predictions_of_sentiments_test}\n\n")
+    f.write(f"Sentiment Classification Report \n{classification_report(ys_test, predictions_of_sentiments_test)}\n")
+
+
+# Part 3.6 and 3.7
+def part_2_3_6(f):
+  '''
+    Function for Top Multi-Layered Perceptron with GridSearchCV
+    ouputs TOP-MLP data: Best EmotionScore , Best SentimentScore , Classification Report
+  '''
+
+  param = {"activation": ("identity", "logistic", "tanh", "relu"), "hidden_layer_sizes": ((5, 5), (5, 10)), "solver": ("adam", "sgd")}
+  model = GridSearchCV(estimator=MLPClassifier(activation='logistic', max_iter=2), param_grid=param)
+  model.fit(x_train, ye_train)
+  emo_predictions = model.best_estimator_.predict(x_test)
+  emo_est = model.best_estimator_
+  emo_score = model.best_score_
+
+  model.fit(x_train, ys_train)
+  sen_predictions = model.best_estimator_.predict(x_test)
+  sen_est = model.best_estimator_
+  sen_score = model.best_score_
+
+  # For part 2.4
+  f.write(f"====================================== TOP-MLP ======================================\n\n")
+  f.write(f"Best Emotion Score: {emo_score}\n\n")
+  f.write(f"Best Emotion Estimator: {emo_est}\n\n")
+  f.write(f"Emotion Classification Report: \n{classification_report(ye_test, emo_predictions)}\n")
+  f.write(f"Best Sentiment Score: {sen_score}\n\n")
+  f.write(f"Best Sentiment Estimator: {sen_est}\n\n")
+  f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sen_predictions)}\n")
+
+  # Confusion Matrix - Emotions
+  plt.clf()
+  cme = confusion_matrix(ye_test, emotion_prediction)
+  cmp = ConfusionMatrixDisplay(cme)
+  fig, ax = plt.subplots(figsize=(15, 15))
+  plt.title('Confusion Matrix of Emotions 2.3.6 TOP MLP')
+  plt.xlabel('Predict Emotions')
+  plt.ylabel('True Emotions')
+  cmp.plot(ax=ax, cmap='viridis')
+  plt.show()
+
+  # Confusion Matrix - Sentiments
+  plt.clf()
+  cms = confusion_matrix(ys_test, sentiment_prediction)
+  ConfusionMatrixDisplay(cms).plot()
+  plt.title('Confusion Matrix of Sentiments 2.3.6 TOP MLP')
+  plt.xlabel('Predict Sentiments')
+  plt.ylabel('True Sentiments')
+  plt.show()
+
+
+with open(output_path, 'w') as f:
+  part_3_5(f)
