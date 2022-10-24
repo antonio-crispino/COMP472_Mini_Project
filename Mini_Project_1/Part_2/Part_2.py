@@ -11,9 +11,9 @@ from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.metrics import ConfusionMatrixDisplay, accuracy_score, classification_report, confusion_matrix
 
 # declare os paths
-main_directory =  os.path.join(os.getcwd(), 'Mini_Project_1')
-dataset_path = os.path.join(main_directory, 'Dataset', 'goemotions.json.gz')
-output_path = os.path.join(main_directory, 'Part_2', 'Output.txt')
+main_directory = os.path.join(os.getcwd(), 'Mini_Project_1')
+dataset_path = '/Users/mairamalhi/JupyterNotebook/COMP472_Mini_Project/Mini_Project_1/Dataset/goemotions.json.gz'
+output_path = '/Users/mairamalhi/Downloads/COMP 472/Output.txt'
 
 # load posts into an array
 posts_array = np.array([])
@@ -78,6 +78,26 @@ def part_2_3_1(f):
   f.write(f"Sentiment Score: {sentiment_accuracy}\n\n")
   f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sentiment_prediction)}\n")
 
+  # Confusion Matrix - Emotions
+  plt.clf()
+  cme = confusion_matrix(ye_test, emotion_prediction)
+  cmp = ConfusionMatrixDisplay(cme)
+  fig, ax = plt.subplots(figsize=(15, 15))
+  plt.title('Confusion Matrix of Emotions 2.3.1 BASE MNB')
+  plt.xlabel('Predict Emotions')
+  plt.ylabel('True Emotions')
+  cmp.plot(ax=ax, cmap='viridis')
+  plt.show()
+
+  # Confusion Matrix - Sentiments
+  plt.clf()
+  cms = confusion_matrix(ys_test, sentiment_prediction)
+  ConfusionMatrixDisplay(cms).plot()
+  plt.title('Confusion Matrix of Sentiments 2.3.1 BASE MNB')
+  plt.xlabel('Predict Sentiments')
+  plt.ylabel('True Sentiments')
+  plt.show()
+
 # Part 2.3.2
 def part_2_3_2(f):
   '''
@@ -100,6 +120,26 @@ def part_2_3_2(f):
   f.write(f"Emotion Classfication Report: \n{classification_report(ye_test, emotion_prediction, zero_division=1)}\n")
   f.write(f"Sentiment Score: {sentiment_accuracy}\n\n")
   f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sentiment_prediction)}\n")
+
+  # Confusion Matrix - Emotions
+  plt.clf()
+  cme = confusion_matrix(ye_test, emotion_prediction)
+  cmp = ConfusionMatrixDisplay(cme)
+  fig, ax = plt.subplots(figsize=(15, 15))
+  plt.title('Confusion Matrix of Emotions 2.3.2 BASE DT')
+  plt.xlabel('Predict Emotions')
+  plt.ylabel('True Emotions')
+  cmp.plot(ax=ax, cmap='viridis')
+  plt.show()
+
+  # Confusion Matrix - Sentiments
+  plt.clf()
+  cms = confusion_matrix(ys_test, sentiment_prediction)
+  ConfusionMatrixDisplay(cms).plot()
+  plt.title('Confusion Matrix of Sentiments 2.3.2 BASE DT')
+  plt.xlabel('Predict Sentiments')
+  plt.ylabel('True Sentiments')
+  plt.show()
 
 # Part 2.3.3
 def part_2_3_3(f):
@@ -126,6 +166,26 @@ def part_2_3_3(f):
   f.write(f"Emotion Classfication Report: \n{classification_report(ye_test, emotion_prediction, zero_division=1)}\n")
   f.write(f"Sentiment Score: {sentiment_accuracy}\n\n")
   f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sentiment_prediction)}\n")
+
+  # Confusion Matrix - Emotions
+  plt.clf()
+  cme = confusion_matrix(ye_test, emotion_prediction)
+  cmp = ConfusionMatrixDisplay(cme)
+  fig, ax = plt.subplots(figsize=(15, 15))
+  plt.title('Confusion Matrix of Emotions 2.3.3 BASE MLP')
+  plt.xlabel('Predict Emotions')
+  plt.ylabel('True Emotions')
+  cmp.plot(ax=ax, cmap='viridis')
+  plt.show()
+
+  # Confusion Matrix - Sentiments
+  plt.clf()
+  cms = confusion_matrix(ys_test, sentiment_prediction)
+  ConfusionMatrixDisplay(cms).plot()
+  plt.title('Confusion Matrix of Sentiments 2.3.3 BASE MLP')
+  plt.xlabel('Predict Sentiments')
+  plt.ylabel('True Sentiments')
+  plt.show()
 
 # Part 2.3.4
 def part_2_3_4(f):
@@ -156,6 +216,26 @@ def part_2_3_4(f):
   f.write(f"Best Sentiment Estimator: {sentiment_best_estimator}\n\n")
   f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sentiment_prediction)}\n")
 
+  # Confusion Matrix - Emotions
+  plt.clf()
+  cme = confusion_matrix(ye_test, emotion_prediction)
+  cmp = ConfusionMatrixDisplay(cme)
+  fig, ax = plt.subplots(figsize=(15, 15))
+  plt.title('Confusion Matrix of Emotions 2.3.4 TOP MNB')
+  plt.xlabel('Predict Emotions')
+  plt.ylabel('True Emotions')
+  cmp.plot(ax=ax, cmap='viridis')
+  plt.show()
+
+  # Confusion Matrix - Sentiments
+  plt.clf()
+  cms = confusion_matrix(ys_test, sentiment_prediction)
+  ConfusionMatrixDisplay(cms).plot()
+  plt.title('Confusion Matrix of Sentiments 2.3.4 TOP MNB')
+  plt.xlabel('Predict Sentiments')
+  plt.ylabel('True Sentiments')
+  plt.show()
+
 # Part 2.3.5
 def part_2_3_5(f):
   '''
@@ -166,13 +246,13 @@ def part_2_3_5(f):
   param = {"criterion": ("gini", "entropy"), "max_depth": (100, 3), "min_samples_split": (12, 5, 30)}
   emotion_classifier = GridSearchCV(estimator=DecisionTreeClassifier(), param_grid=param)
   emotion_model = emotion_classifier.fit(x_train, ye_train)
-  emo_predictions = emotion_model.best_estimator_.predict(x_test)
+  emotion_prediction = emotion_model.best_estimator_.predict(x_test)
   emo_est = emotion_model.best_estimator_
   emo_score = emotion_model.best_score_
 
   sentiment_classifier = GridSearchCV(estimator=DecisionTreeClassifier(), param_grid=param)
   sentiment_model = sentiment_classifier.fit(x_train, ys_train)
-  sen_predictions = sentiment_model.best_estimator_.predict(x_test)
+  sentiment_prediction = sentiment_model.best_estimator_.predict(x_test)
   sen_est = sentiment_model.best_estimator_
   sen_score = sentiment_model.best_score_
 
@@ -180,10 +260,30 @@ def part_2_3_5(f):
   f.write(f"====================================== TOP-DT ======================================\n\n")
   f.write(f"Best Emotion Score: {emo_score}\n\n")
   f.write(f"Best Emotion Estimator: {emo_est}\n\n")
-  f.write(f"Emotion Classification Report: \n{classification_report(ye_test, emo_predictions)}\n")
+  f.write(f"Emotion Classification Report: \n{classification_report(ye_test, emotion_prediction)}\n")
   f.write(f"Best Sentiment Score: {sen_score}\n\n")
   f.write(f"Best Sentiment Estimator: {sen_est}\n\n")
-  f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sen_predictions)}\n")
+  f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sentiment_prediction)}\n")
+
+  # Confusion Matrix - Emotions
+  plt.clf()
+  cme = confusion_matrix(ye_test, emotion_prediction)
+  cmp = ConfusionMatrixDisplay(cme)
+  fig, ax = plt.subplots(figsize=(15, 15))
+  plt.title('Confusion Matrix of Emotions 2.3.5 TOP DT')
+  plt.xlabel('Predict Emotions')
+  plt.ylabel('True Emotions')
+  cmp.plot(ax=ax, cmap='viridis')
+  plt.show()
+
+  # Confusion Matrix - Sentiments
+  plt.clf()
+  cms = confusion_matrix(ys_test, sentiment_prediction)
+  ConfusionMatrixDisplay(cms).plot()
+  plt.title('Confusion Matrix of Sentiments 2.3.5 TOP DT')
+  plt.xlabel('Predict Sentiments')
+  plt.ylabel('True Sentiments')
+  plt.show()
 
 # Part 2.3.6
 def part_2_3_6(f):
@@ -195,12 +295,12 @@ def part_2_3_6(f):
   param = {"activation": ("identity", "logistic", "tanh", "relu"), "hidden_layer_sizes": ((5, 5), (5, 10)), "solver": ("adam", "sgd")}
   model = GridSearchCV(estimator=MLPClassifier(activation='logistic', max_iter=2), param_grid=param)
   model.fit(x_train, ye_train)
-  emo_predictions = model.best_estimator_.predict(x_test)
+  emotion_prediction = model.best_estimator_.predict(x_test)
   emo_est = model.best_estimator_
   emo_score = model.best_score_
 
   model.fit(x_train, ys_train)
-  sen_predictions = model.best_estimator_.predict(x_test)
+  sentiment_prediction = model.best_estimator_.predict(x_test)
   sen_est = model.best_estimator_
   sen_score = model.best_score_
 
@@ -208,10 +308,30 @@ def part_2_3_6(f):
   f.write(f"====================================== TOP-MLP ======================================\n\n")
   f.write(f"Best Emotion Score: {emo_score}\n\n")
   f.write(f"Best Emotion Estimator: {emo_est}\n\n")
-  f.write(f"Emotion Classification Report: \n{classification_report(ye_test, emo_predictions)}\n")
+  f.write(f"Emotion Classification Report: \n{classification_report(ye_test, emotion_prediction)}\n")
   f.write(f"Best Sentiment Score: {sen_score}\n\n")
   f.write(f"Best Sentiment Estimator: {sen_est}\n\n")
-  f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sen_predictions)}\n")
+  f.write(f"Sentiment Classification Report \n{classification_report(ys_test, sentiment_prediction)}\n")
+
+  # Confusion Matrix - Emotions
+  plt.clf()
+  cme = confusion_matrix(ye_test, emotion_prediction)
+  cmp = ConfusionMatrixDisplay(cme)
+  fig, ax = plt.subplots(figsize=(15, 15))
+  plt.title('Confusion Matrix of Emotions 2.3.6 TOP MLP')
+  plt.xlabel('Predict Emotions')
+  plt.ylabel('True Emotions')
+  cmp.plot(ax=ax, cmap='viridis')
+  plt.show()
+
+  # Confusion Matrix - Sentiments
+  plt.clf()
+  cms = confusion_matrix(ys_test, sentiment_prediction)
+  ConfusionMatrixDisplay(cms).plot()
+  plt.title('Confusion Matrix of Sentiments 2.3.6 TOP MLP')
+  plt.xlabel('Predict Sentiments')
+  plt.ylabel('True Sentiments')
+  plt.show()
 
 # Part 2.5
 def part_2_5(f):
@@ -222,7 +342,7 @@ def part_2_5(f):
 
   f.write(f"\n\n---------------------------STOP WORDS REMOVED-----------------------------------\n\n")
   part_2_3_1(f)
-  # part_2_3_2(f)
+  part_2_3_2(f)
   part_2_3_3(f)
   part_2_3_4(f)
   part_2_3_5(f)
@@ -232,7 +352,7 @@ def part_2_5(f):
 with open(output_path, 'a+') as f:
   part_2_1(f)
   part_2_3_1(f)
-  # part_2_3_2(f)
+  part_2_3_2(f)
   part_2_3_3(f)
   part_2_3_4(f)
   part_2_3_5(f)
